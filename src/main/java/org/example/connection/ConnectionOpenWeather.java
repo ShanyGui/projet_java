@@ -4,6 +4,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+
 import org.json.JSONObject;
 
 public class ConnectionOpenWeather {
@@ -49,6 +51,26 @@ public class ConnectionOpenWeather {
         String city = result.getString("name");
 
         return city;
+    }
+
+    public static ArrayList getCoordonatesByCity(String city) { // Pemet de récupérer les coordonées d'une ville via son nom
+        // On créé le client
+        var client = HttpClient.newHttpClient();
+        // On créé la requête
+        var request = HttpRequest.newBuilder(URI.create("https://api.openweathermap.org/data/2.5/weather?q="+ city +"&appid=3e245e4b32fb92ee3772fa220c013d77&lang=fr"))
+                .build();
+        //var response = client.send(request, new JsonBodyHandler<>(APOD.class));
+        JSONObject result = client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenApply(JSONObject::new)
+                .join();
+
+        float lat = result.getJSONObject("coord").getFloat("lat");
+        float lon = result.getJSONObject("coord").getFloat("lon");
+        ArrayList coord = new ArrayList<>();
+        coord.add(lat);
+        coord.add(lon);
+        return coord;
     }
 
 
