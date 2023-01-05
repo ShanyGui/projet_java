@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TemperaturesCRUD {
-    public void createTemperature(String city, BigDecimal temperature) {
+    public void createTemperature(Temperatures temperature) {
         try{
             Connection con = MySqlConnector.getConnection();
             Statement statement = con.createStatement();
             String sqlquery = "INSERT INTO temperatures (city, temperature) VALUES (? , ?); ";
             PreparedStatement preparedStatement = con.prepareStatement(sqlquery);
-            preparedStatement.setString(1, city);
-            preparedStatement.setBigDecimal(2, temperature);
+            preparedStatement.setString(1, temperature.getCity());
+            preparedStatement.setBigDecimal(2, temperature.getTemperature());
             int rs = preparedStatement.executeUpdate();
             if (rs > 0)
             {
