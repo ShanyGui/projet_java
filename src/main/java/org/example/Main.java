@@ -17,7 +17,9 @@ public class Main {
     public static void main(String[] args) throws ParseException, IOException {
         System.out.println("Initialisation");
         System.out.println("Veuillez choisir l'opération à réaliser : \n 1- Connaître la température d'un point du globe " +
-                "\n 2- Lire et enregistrer la température d'un point du globe");
+                "\n 2- Lire et enregistrer la température d'un point du globe " +
+                "\n 3- Trouver les coordonnées d'une ville via BDD " +
+                "\n 4- Trouver les coordonnées d'une ville via l'API");
         Scanner scanner = new Scanner(System.in);
         int choix = scanner.nextInt();
         double lat;
@@ -30,6 +32,8 @@ public class Main {
                 lng = scanner.nextDouble();
                 System.out.println("A : " + ConnectionOpenWeather.getCity(lat,lng));
                 System.out.println("La température est de : " + ConnectionOpenWeather.getTemperature(lat,lng) + " °C");
+                break;
+
             case 2:
                 String date_string;
                 System.out.println("Entrez la latitude ( Attention utilisez une virgule )");
@@ -45,6 +49,8 @@ public class Main {
                 Temperatures temp = new Temperatures(date,lat,lng);
                 TemperaturesCRUD temperaturesCRUD = new TemperaturesCRUD();
                 temperaturesCRUD.createTemperature(temp);
+                break;
+
             case 3:
                 WorldCityCRUD wccrud = new WorldCityCRUD();
                 WorldCity city;
@@ -57,11 +63,13 @@ public class Main {
                 } else {
                     System.out.println("Nous ne possédons aucune information sur cette ville.");
                 }
+                break;
+
             case 4:
                 WorldCityCRUD findcity = new WorldCityCRUD();
                 WorldCity cityfound;
                 ArrayList coords = new ArrayList<>();
-                System.out.println("Entrez le nom de la ville que vous cherchez :");
+                System.out.println("Entrez le nom de la ville que vous cherchez via API :");
                 String searchCity = scanner.next();
                 coords = ConnectionOpenWeather.getCoordonatesByCity(searchCity);
                 if (coords != null){
@@ -72,6 +80,7 @@ public class Main {
                 }else{
                     System.out.println("Aucun résultat trouvé");
                 }
+                break;
         }
         Server server=new Server(); // quasi fonctionnelle
         server.connect("127.0.0.1",6666);
