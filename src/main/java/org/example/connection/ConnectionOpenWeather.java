@@ -18,25 +18,33 @@ import org.json.JSONArray;
 public class ConnectionOpenWeather {
 
     public static float getTemperature(double lat,double lon){ // Pensez à convertir lors de l'appel de la méthode avec les données de l'API.
-        // On créé le client
-        var client = HttpClient.newHttpClient();
-
-        // On créé la requête
-        var request = HttpRequest.newBuilder(URI.create("https://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon + "&appid=3e245e4b32fb92ee3772fa220c013d77&lang=fr"))
-                //.header("accept", "application/json") // semble inutile ici
-                .build();
+        float temp = 0;
+        try {
 
 
-        //var response = client.send(request, new JsonBodyHandler<>(APOD.class));
-        JSONObject result = client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenApply(JSONObject::new)
-                .join();
+            // On créé le client
+            var client = HttpClient.newHttpClient();
 
-        float temp = result.getJSONObject("main").getFloat("temp");
+            // On créé la requête
+            var request = HttpRequest.newBuilder(URI.create("https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=3e245e4b32fb92ee3772fa220c013d77&lang=fr"))
+                    //.header("accept", "application/json") // semble inutile ici
+                    .build();
+
+
+            //var response = client.send(request, new JsonBodyHandler<>(APOD.class));
+            JSONObject result = client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenApply(JSONObject::new)
+                    .join();
+
+            temp = result.getJSONObject("main").getFloat("temp");
+
+        }
+        catch (RuntimeException e) {
+            e.printStackTrace();
+        }
 
         return temp;
-
 
     }
 
