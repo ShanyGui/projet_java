@@ -35,6 +35,9 @@ public class WorldCity {
         this.iso3 = iso3;
     }
 
+    public WorldCity() {
+    }
+
     public int getId() {
         return id;
     }
