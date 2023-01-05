@@ -1,5 +1,7 @@
 package org.example.temperatures;
 
+import org.example.connection.ConnectionOpenWeather;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -8,6 +10,19 @@ public class Temperatures {
     Date timestamp;
     String city;
     BigDecimal temperature;
+
+    public Temperatures(int id, Date timestamp, double lat, double lng) {
+        this.id = id;
+        this.timestamp = timestamp;
+        this.city = ConnectionOpenWeather.getCity(lat,lng);
+        this.temperature = BigDecimal.valueOf(ConnectionOpenWeather.getTemperature(lat,lng));
+    }
+
+    public Temperatures(Date timestamp, double lat, double lng) {
+        this.timestamp = timestamp;
+        this.city = ConnectionOpenWeather.getCity(lat,lng);
+        this.temperature = BigDecimal.valueOf(ConnectionOpenWeather.getTemperature(lat,lng));
+    }
 
     public Temperatures(int id, Date timestamp, String city, BigDecimal temperature) {
         this.id = id;
