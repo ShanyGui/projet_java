@@ -1,21 +1,20 @@
 package org.example;
 
 import org.example.connection.ConnectionOpenWeather;
+import org.example.socket.Server;
 import org.example.temperatures.Temperatures;
 import org.example.temperatures.TemperaturesCRUD;
 import org.example.worldcity.WorldCity;
 import org.example.worldcity.WorldCityCRUD;
-import java.sql.Timestamp;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Scanner.*;
 
 public class Main {
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
         System.out.println("Initialisation");
         System.out.println("Veuillez choisir l'opération à réaliser : \n 1- Connaître la température d'un point du globe " +
                 "\n 2- Lire et enregistrer la température d'un point du globe");
@@ -37,9 +36,9 @@ public class Main {
                 lat = scanner.nextDouble();
                 System.out.println("Entrez la longitude ( Attention utilisez une virgule )");
                 lng = scanner.nextDouble();
-                System.out.println("Entrez la date d'aujourd'hui ( format YYYY-MM-DD )");
+                System.out.println("Entrez la date d'aujourd'hui ( format DD/MM/YYYY )");
                 date_string = scanner.next();
-                Date date = new SimpleDateFormat("YYYY-MM-DD").parse(date_string);
+                Date date = new SimpleDateFormat("DD/MM/YYYY").parse(date_string);
                 //Timestamp ts = new Timestamp(date.getTime());
                 System.out.println("A : " + ConnectionOpenWeather.getCity(lat,lng));
                 System.out.println("La température est de : " + ConnectionOpenWeather.getTemperature(lat,lng) + " °C");
@@ -74,5 +73,18 @@ public class Main {
                     System.out.println("Aucun résultat trouvé");
                 }
         }
+        Server server=new Server(); // quasi fonctionnelle
+        server.connect("127.0.0.1",6666);
+        server.nextMessage();
+        server.sendMessage("hello client");
+        server.sendMessage("Over");
+        server.disconnect();
+
+
+
+
+
+
+
     }
 }
