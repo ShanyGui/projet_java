@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.connection.ConnectionOpenWeather;
 import org.example.worldcity.WorldCity;
 import org.example.worldcity.WorldCityCRUD;
 
@@ -18,6 +19,9 @@ public class Main {
         //System.out.println(worldCityCRUD.create(worldCity1));
         //System.out.println(worldCityCRUD.delete(7));
         //System.out.println(worldCityCRUD.update(worldCity1,3));
+
+        System.out.println(ConnectionOpenWeather.getTemperature(31.1667,121.4667));
+        System.out.println(ConnectionOpenWeather.getCity(31.1667,121.4667));
 
 
 
