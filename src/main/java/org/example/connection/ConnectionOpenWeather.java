@@ -26,7 +26,7 @@ public class ConnectionOpenWeather {
             var client = HttpClient.newHttpClient();
 
             // On créé la requête
-            var request = HttpRequest.newBuilder(URI.create("https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=3e245e4b32fb92ee3772fa220c013d77&lang=fr"))
+            var request = HttpRequest.newBuilder(URI.create("https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=3e245e4b32fb92ee3772fa220c013d77&lang=fr&units=metric"))
                     //.header("accept", "application/json") // semble inutile ici
                     .build();
 

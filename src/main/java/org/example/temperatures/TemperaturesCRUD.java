@@ -12,17 +12,20 @@ public class TemperaturesCRUD {
         try{
             Connection con = MySqlConnector.getConnection();
             Statement statement = con.createStatement();
-            String sqlquery = "INSERT INTO temperatures (city, temperature) VALUES (? , ?); ";
-            PreparedStatement preparedStatement = con.prepareStatement(sqlquery);
-            preparedStatement.setString(1, temperature.getCity());
-            preparedStatement.setBigDecimal(2, temperature.getTemperature());
-            int rs = preparedStatement.executeUpdate();
-            if (rs > 0)
-            {
-                System.out.println("Vous venez d'ajouter une ligne");
-            }else {
-                System.out.println("ECHEC");
+            String sqlquery = "INSERT INTO temperatures (timestamp, city, temperature) VALUES (? , ? , ?); ";
+            PreparedStatement preparedStatement = con.prepareStatement(sqlquery, PreparedStatement.RETURN_GENERATED_KEYS);;
+            preparedStatement.setDate(1, new java.sql.Date(temperature.getTimestamp().getTime()));
+            preparedStatement.setString(2, temperature.getCity());
+            preparedStatement.setBigDecimal(3, temperature.getTemperature());
+
+            preparedStatement.executeUpdate();
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            if (keys.next()) {
+                System.out.println("Insertion réussie avec une clé primaire : " + keys.getInt(1));
+            } else {
+                System.out.println("Problème d'insertion");
             }
+
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
