@@ -64,12 +64,8 @@ public class WorldCityCRUD {
                 WorldCity worldCity = new WorldCity(id,city,city_ascii,lat,lng,country,iso2,iso3);
                 worldCities.add(worldCity);
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
-
-
         }
         return worldCities;
     }
@@ -94,15 +90,36 @@ public class WorldCityCRUD {
                 String iso3 = result.getString("iso3");
                 return new WorldCity(id,city,city_ascii,lat,lng,country,iso2,iso3);
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
-
-
         }
         return null;
     }
+
+    public WorldCity findByCity(String namecity) {
+        Connection con = MySqlConnector.getConnection();
+        String findByIdRequest = "SELECT * FROM worldcities WHERE city = ?";
+        try{
+            PreparedStatement ps = con.prepareStatement(findByIdRequest);
+            ps.setString(1, namecity);
+            ps.executeQuery();
+            ResultSet result = ps.executeQuery();
+            if(result.next()){
+                String city = result.getString(2);
+                String city_ascii = result.getString("city_ascii");
+                BigDecimal lat = result.getBigDecimal("lat");
+                BigDecimal lng = result.getBigDecimal("lng");
+                String country = result.getString("country");
+                String iso2 = result.getString("iso2");
+                String iso3 = result.getString("iso3");
+                return new WorldCity(city,city_ascii,lat,lng,country,iso2,iso3);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public WorldCity update(WorldCity worldCity, int id) {
 
